@@ -1,0 +1,79 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+
+  <interface name="org.kde.StatusNotifierItem">
+    <!-- Based on https://www.freedesktop.org/wiki/Specifications/StatusNotifierItem/StatusNotifierItem/ -->
+
+    <property name="Category" type="s" access="read"/>
+    <property name="Id" type="s" access="read"/>
+    <property name="Title" type="s" access="read"/>
+    <property name="Status" type="s" access="read"/>
+    <property name="WindowId" type="i" access="read"/>
+    <property name="IconName" type="s" access="read" />
+
+    <!-- TODO: API not supported yet
+    <property name="IconPixmap" type="(iiay)" access="read">
+        <annotation name="org.qtproject.QtDBus.QtTypeName" value="XdgDbusImageVector"/>
+    </property>
+    -->
+
+    <property name="OverlayIconName" type="s" access="read"/>
+
+    <!-- TODO: API not supported yet
+    <property name="OverlayIconPixmap" type="(iiay)" access="read">
+        <annotation name="org.qtproject.QtDBus.QtTypeName" value="XdgDbusImageVector"/>
+    </property>
+    -->
+
+    <property name="AttentionIconName" type="s" access="read"/>
+
+    <!-- TODO: API not supported yet
+    <property name="AttentionIconPixmap" type="(iiay)" access="read">
+        <annotation name="org.qtproject.QtDBus.QtTypeName" value="XdgDbusImageVector"/>
+    </property>
+    -->
+
+    <property name="AttentionMovieName" type="s" access="read"/>
+
+
+    <!-- TODO: API not supported yet
+    org.freedesktop.StatusNotifierItem.ToolTip
+    org.freedesktop.StatusNotifierItem.ItemIsMenu
+    org.freedesktop.StatusNotifierItem.Menu
+    -->
+
+    <!-- TODO: API not supported yet
+    <method name="ContextMenu">
+        <arg name="x" type="i" direction="in"/>
+        <arg name="y" type="i" direction="in"/>
+    </method>
+    -->
+
+    <method name="Activate"> <!-- click -->
+        <arg name="x" type="i" direction="in"/>
+        <arg name="y" type="i" direction="in"/>
+    </method>
+
+    <method name="SecondaryActivate"> <!-- long press -->
+        <arg name="x" type="i" direction="in"/>
+        <arg name="y" type="i" direction="in"/>
+    </method>
+
+    <!-- TODO: API not supported yet
+    <method name="Scroll">
+      <arg name="delta" type="i" direction="in"/>
+      <arg name="orientation" type="s" direction="in"/>
+    </method>
+    -->
+
+    <signal name="NewTitle" />
+    <signal name="NewIcon" />
+    <signal name="NewAttentionIcon" />
+    <signal name="NewOverlayIcon" />
+    <signal name="NewToolTip" />
+    <signal name="NewStatus">
+      <arg name="status" type="s"/>
+    </signal>
+
+  </interface>
+</node>

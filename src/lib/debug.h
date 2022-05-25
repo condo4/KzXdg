@@ -1,0 +1,9 @@
+#ifndef DEBUG_H
+#define DEBUG_H
+
+#include <QLoggingCategory>
+
+Q_DECLARE_LOGGING_CATEGORY(AUTO_START)
+Q_DECLARE_LOGGING_CATEGORY(SYSTEM_TRAY)
+
+#endif // DEBUG_H
