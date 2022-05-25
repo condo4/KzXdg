@@ -106,7 +106,7 @@ static inline QStringList args_substitution(const QStringList &tokens, const QSt
 }
 
 
-xdg::Entry::Entry(QString desktopfile, QObject *parent)
+KaZoe::Entry::Entry(QString desktopfile, QObject *parent)
     : QObject(parent)
     , m_path(desktopfile)
     , m_file(new QSettings(desktopfile, QSettings::IniFormat, this))
@@ -120,7 +120,7 @@ xdg::Entry::Entry(QString desktopfile, QObject *parent)
     QObject::connect(&m_process, &QProcess::stateChanged, this, &Entry::_processStateChanged);
 }
 
-xdg::Entry::Entry(QObject *parent)
+KaZoe::Entry::Entry(QObject *parent)
     : QObject(parent)
 {
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
@@ -131,7 +131,7 @@ xdg::Entry::Entry(QObject *parent)
     QObject::connect(&m_process, &QProcess::stateChanged, this, &Entry::_processStateChanged);
 }
 
-xdg::Entry::Entry(const Entry &origin)
+KaZoe::Entry::Entry(const Entry &origin)
     : QObject(origin.parent())
     , m_path(origin.path())
     , m_file(new QSettings(origin.path(), QSettings::IniFormat, this))
@@ -146,7 +146,7 @@ xdg::Entry::Entry(const Entry &origin)
 }
 
 
-QString xdg::Entry::data(const QString &key) const
+QString KaZoe::Entry::data(const QString &key) const
 {
     if(!m_file)
         return QString();
@@ -175,7 +175,7 @@ QString xdg::Entry::data(const QString &key) const
     return m_file->value(key).toString();
 }
 
-void xdg::Entry::start(QStringList args)
+void KaZoe::Entry::start(QStringList args)
 {
     QString exec = data(XDG_EXEC);
     QString startExec = data(XDG_ACTION_START);
@@ -209,7 +209,7 @@ void xdg::Entry::start(QStringList args)
     }
 }
 
-void xdg::Entry::stop(QStringList args)
+void KaZoe::Entry::stop(QStringList args)
 {
     QString stopExec = data(XDG_ACTION_STOP);
 
@@ -229,28 +229,28 @@ void xdg::Entry::stop(QStringList args)
     }
 }
 
-QString xdg::Entry::path() const
+QString KaZoe::Entry::path() const
 {
     return m_path;
 }
 
-QString xdg::Entry::appId() const
+QString KaZoe::Entry::appId() const
 {
     QFileInfo fi(path());
     return fi.completeBaseName();
 }
 
-QString xdg::Entry::icon() const
+QString KaZoe::Entry::icon() const
 {
     return data(XDG_ICON);
 }
 
-int xdg::Entry::pid() const
+int KaZoe::Entry::pid() const
 {
     return m_process.processId();
 }
 
-void xdg::Entry::setDesktopFile(QString desktopFile)
+void KaZoe::Entry::setDesktopFile(QString desktopFile)
 {
     m_path = desktopFile;
     m_file = new QSettings(desktopFile, QSettings::IniFormat);
@@ -258,12 +258,12 @@ void xdg::Entry::setDesktopFile(QString desktopFile)
     emit iconChanged(data(XDG_ICON));
 }
 
-void xdg::Entry::setAppId(QString appId)
+void KaZoe::Entry::setAppId(QString appId)
 {
     /* Search for appid destopfile */
     QString filename;
 
-    filename = xdg::dataHome() + "/applications/" + appId + ".desktop";
+    filename = KaZoe::dataHome() + "/applications/" + appId + ".desktop";
     if(filename.length())
     {
         QFileInfo info(filename);
@@ -274,7 +274,7 @@ void xdg::Entry::setAppId(QString appId)
         }
     }
 
-    for(QString dir: xdg::dataDirs())
+    for(QString dir: KaZoe::dataDirs())
     {
         filename = dir + "/applications/" + appId + ".desktop";
         QFileInfo info(filename);
@@ -288,7 +288,7 @@ void xdg::Entry::setAppId(QString appId)
 }
 
 
-void xdg::Entry::_desktopFileChanged(const QString &path)
+void KaZoe::Entry::_desktopFileChanged(const QString &path)
 {
     if(!m_file)
         return;
@@ -309,7 +309,7 @@ void xdg::Entry::_desktopFileChanged(const QString &path)
     }
 }
 
-void xdg::Entry::_processStateChanged(QProcess::ProcessState newState)
+void KaZoe::Entry::_processStateChanged(QProcess::ProcessState newState)
 {
     emit dataChanged(XDG_KEYWORDS, data(XDG_KEYWORDS));
 }

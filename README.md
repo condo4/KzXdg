@@ -19,8 +19,8 @@ KzXdgUtils provide a library using Qt Core only, and a Qt Module to use it direc
 # Build and deploy
 
 ```sh
-git clone https://kazoe.org/cgit/kazoe/kazoe-xdgutils.git
-cd xdgutils
+git clone https://kazoe.org/cgit/kazoe/KzXdg.git
+cd KzXdg
 mkdir build
 cd build
 cmake .. -DCMAKE_INSTALL_PREFIX=/usr

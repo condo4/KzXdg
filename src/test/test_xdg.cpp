@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    xdg::Entries entries;
+    KaZoe::Entries entries;
     entries.addDirectory("/usr/share/applications");
 /*
     QTimer t;

@@ -1,18 +1,18 @@
 #include "xdgnotificationactions.h"
 #include <QDebug>
 
-xdg::NotificationActions::NotificationActions(QObject *parent)
+KaZoe::NotificationActions::NotificationActions(QObject *parent)
     : QAbstractListModel(parent)
 {
 
 }
 
-QStringList xdg::NotificationActions::actionslist() const
+QStringList KaZoe::NotificationActions::actionslist() const
 {
     return m_actionslist;
 }
 
-void xdg::NotificationActions::setActionslist(const QStringList &newActionslist)
+void KaZoe::NotificationActions::setActionslist(const QStringList &newActionslist)
 {
     if(newActionslist.count() % 2 != 0)
     {
@@ -34,12 +34,12 @@ void xdg::NotificationActions::setActionslist(const QStringList &newActionslist)
     emit actionslistChanged();
 }
 
-int xdg::NotificationActions::rowCount(const QModelIndex &parent) const
+int KaZoe::NotificationActions::rowCount(const QModelIndex &parent) const
 {
     return m_actions.count();
 }
 
-QVariant xdg::NotificationActions::data(const QModelIndex &index, int role) const
+QVariant KaZoe::NotificationActions::data(const QModelIndex &index, int role) const
 {
     if(index.row() > m_actions.count())
         return QVariant();
@@ -54,7 +54,7 @@ QVariant xdg::NotificationActions::data(const QModelIndex &index, int role) cons
     return QVariant();
 }
 
-QHash<int, QByteArray> xdg::NotificationActions::roleNames() const
+QHash<int, QByteArray> KaZoe::NotificationActions::roleNames() const
 {
     QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
     roles[KeyRole] = "key";

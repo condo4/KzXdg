@@ -3,60 +3,60 @@
 #include "xdgnotificationmessage.h"
 #include "notificationsadaptor.h"
 
-uint xdg::serverNotify(QObject *obj, const QString &app_name, uint replaces_id, const QString &app_icon, const QString &summary, const QString &body, const QStringList &actions, const QVariantMap &hints, int timeout)
+uint KaZoe::serverNotify(QObject *obj, const QString &app_name, uint replaces_id, const QString &app_icon, const QString &summary, const QString &body, const QStringList &actions, const QVariantMap &hints, int timeout)
 {
-    xdg::NotificationManager *manager = qobject_cast<xdg::NotificationManager*>(obj);
+    KaZoe::NotificationManager *manager = qobject_cast<KaZoe::NotificationManager*>(obj);
     if(replaces_id != 0 && manager->m_pending.contains(replaces_id))
     {
-        xdg::NotificationMessage *message = manager->m_pending[replaces_id];
+        KaZoe::NotificationMessage *message = manager->m_pending[replaces_id];
         message->update(app_name, app_icon, summary, body, actions, hints, timeout);
     }
     else
     {
-        xdg::NotificationMessage *message = new xdg::NotificationMessage(app_name, app_icon, summary, body, actions, hints, timeout, manager);
+        KaZoe::NotificationMessage *message = new KaZoe::NotificationMessage(app_name, app_icon, summary, body, actions, hints, timeout, manager);
 
-        QObject::connect(message, &xdg::NotificationMessage::appNameChanged, [manager, replaces_id](){
-            const QVector<int> roles = {xdg::NotificationManager::AppNameRole};
+        QObject::connect(message, &KaZoe::NotificationMessage::appNameChanged, [manager, replaces_id](){
+            const QVector<int> roles = {KaZoe::NotificationManager::AppNameRole};
             emit manager->dataChanged(
                         manager->index(replaces_id),
                         manager->index(replaces_id),
                         roles);
         });
 
-        QObject::connect(message, &xdg::NotificationMessage::appIconChanged, [manager, replaces_id](){
-            const QVector<int> roles = {xdg::NotificationManager::AppIconRole};
+        QObject::connect(message, &KaZoe::NotificationMessage::appIconChanged, [manager, replaces_id](){
+            const QVector<int> roles = {KaZoe::NotificationManager::AppIconRole};
             emit manager->dataChanged(
                         manager->index(replaces_id),
                         manager->index(replaces_id),
                         roles);
         });
 
-        QObject::connect(message, &xdg::NotificationMessage::summaryChanged, [manager, replaces_id](){
-            const QVector<int> roles = {xdg::NotificationManager::SummaryRole};
+        QObject::connect(message, &KaZoe::NotificationMessage::summaryChanged, [manager, replaces_id](){
+            const QVector<int> roles = {KaZoe::NotificationManager::SummaryRole};
             emit manager->dataChanged(
                         manager->index(replaces_id),
                         manager->index(replaces_id),
                         roles);
         });
 
-        QObject::connect(message, &xdg::NotificationMessage::bodyChanged, [manager, replaces_id](){
-            const QVector<int> roles = {xdg::NotificationManager::BodyRole};
+        QObject::connect(message, &KaZoe::NotificationMessage::bodyChanged, [manager, replaces_id](){
+            const QVector<int> roles = {KaZoe::NotificationManager::BodyRole};
             emit manager->dataChanged(
                         manager->index(replaces_id),
                         manager->index(replaces_id),
                         roles);
         });
 
-        QObject::connect(message, &xdg::NotificationMessage::actionsChanged, [manager, replaces_id](){
-            const QVector<int> roles = {xdg::NotificationManager::ActionsRole};
+        QObject::connect(message, &KaZoe::NotificationMessage::actionsChanged, [manager, replaces_id](){
+            const QVector<int> roles = {KaZoe::NotificationManager::ActionsRole};
             emit manager->dataChanged(
                         manager->index(replaces_id),
                         manager->index(replaces_id),
                         roles);
         });
 
-        QObject::connect(message, &xdg::NotificationMessage::hintsChanged, [manager, replaces_id](){
-            const QVector<int> roles = {xdg::NotificationManager::HintsRole};
+        QObject::connect(message, &KaZoe::NotificationMessage::hintsChanged, [manager, replaces_id](){
+            const QVector<int> roles = {KaZoe::NotificationManager::HintsRole};
             emit manager->dataChanged(
                         manager->index(replaces_id),
                         manager->index(replaces_id),
@@ -64,8 +64,8 @@ uint xdg::serverNotify(QObject *obj, const QString &app_name, uint replaces_id, 
         });
 
 
-        QObject::connect(message, &xdg::NotificationMessage::expired, [manager](QObject *obj){
-            xdg::NotificationMessage *msg = qobject_cast<xdg::NotificationMessage*>(obj);
+        QObject::connect(message, &KaZoe::NotificationMessage::expired, [manager](QObject *obj){
+            KaZoe::NotificationMessage *msg = qobject_cast<KaZoe::NotificationMessage*>(obj);
             if(msg)
             {
                 manager->close(manager->m_pending.key(msg), 1);
@@ -82,7 +82,7 @@ uint xdg::serverNotify(QObject *obj, const QString &app_name, uint replaces_id, 
 }
 
 
-xdg::NotificationManager::NotificationManager(QObject *parent)
+KaZoe::NotificationManager::NotificationManager(QObject *parent)
     : QAbstractListModel(parent)
 {
     m_server = new XdgNotificationServer(this);
@@ -94,12 +94,12 @@ xdg::NotificationManager::NotificationManager(QObject *parent)
     XdgNotificationServer::RegisterServerToDbus(*m_server);
 }
 
-int xdg::NotificationManager::rowCount(const QModelIndex &parent) const
+int KaZoe::NotificationManager::rowCount(const QModelIndex &parent) const
 {
     return m_ids.count();
 }
 
-QVariant xdg::NotificationManager::data(const QModelIndex &index, int role) const
+QVariant KaZoe::NotificationManager::data(const QModelIndex &index, int role) const
 {
     if(index.row() > m_ids.count())
         return QVariant();
@@ -128,7 +128,7 @@ QVariant xdg::NotificationManager::data(const QModelIndex &index, int role) cons
     return QVariant();
 }
 
-QHash<int, QByteArray> xdg::NotificationManager::roleNames() const
+QHash<int, QByteArray> KaZoe::NotificationManager::roleNames() const
 {
     QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
     roles[AppNameRole] = "appName";
@@ -142,12 +142,12 @@ QHash<int, QByteArray> xdg::NotificationManager::roleNames() const
 }
 
 
-int xdg::NotificationManager::nbNotifications()
+int KaZoe::NotificationManager::nbNotifications()
 {
     return rowCount();
 }
 
-void xdg::NotificationManager::close(unsigned int id, unsigned int reason)
+void KaZoe::NotificationManager::close(unsigned int id, unsigned int reason)
 {
     unsigned int index = m_ids.indexOf(id);
     beginRemoveRows(QModelIndex(), index, index);
@@ -161,13 +161,13 @@ void xdg::NotificationManager::close(unsigned int id, unsigned int reason)
     m_server->sendNotificationClosed(id, reason);
 }
 
-void xdg::NotificationManager::returnAction(unsigned int appid, const QString &key)
+void KaZoe::NotificationManager::returnAction(unsigned int appid, const QString &key)
 {
     m_server->sendActionInvoked(appid, key);
     close(appid, 2);
 }
 
-void xdg::NotificationManager::_closeNotification(unsigned int id)
+void KaZoe::NotificationManager::_closeNotification(unsigned int id)
 {
     close(id, 3);
 }

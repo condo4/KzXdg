@@ -5,7 +5,7 @@
 #include <QObject>
 #include <QScopedPointer>
 
-namespace xdg {
+namespace KaZoe {
     class StatusNotifierHostPrivate;
 
     class StatusNotifierHost : public QAbstractListModel

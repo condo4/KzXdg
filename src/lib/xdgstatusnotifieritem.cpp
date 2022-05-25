@@ -5,7 +5,7 @@
 #include <QGuiApplication>
 #include <debug.h>
 
-using namespace xdg;
+using namespace KaZoe;
 
 StatusNotifierItem::StatusNotifierItem(QObject *parent)
     : QObject{parent}
@@ -14,7 +14,7 @@ StatusNotifierItem::StatusNotifierItem(QObject *parent)
     if (!bus.isConnected()) {
         qCWarning(SYSTEM_TRAY) << "Cannot connect to the D-Bus session bus.\n" << "Please check your system settings and try again.\n";
     }
-    QString serviceName = "org.xdgutils.";
+    QString serviceName = "org.kazoe.xdg";
     setId((QGuiApplication::desktopFileName().isEmpty())?(QCoreApplication::applicationName()):(QGuiApplication::desktopFileName()));
     serviceName.append(Id());
     serviceName.append("-");

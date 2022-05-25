@@ -6,7 +6,7 @@
 
 class XdgNotificationServer;
 
-namespace xdg {
+namespace KaZoe {
     uint serverNotify(QObject *manager, const QString &app_name, uint replaces_id, const QString &app_icon, const QString &summary, const QString &body, const QStringList &actions, const QVariantMap &hints, int timeout);
     class NotificationMessage;
 

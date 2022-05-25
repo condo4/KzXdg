@@ -6,7 +6,7 @@
 
 using namespace org::kde;
 
-namespace xdg {
+namespace KaZoe {
     class StatusNotifierHostPrivate {
         Q_DISABLE_COPY(StatusNotifierHostPrivate)
         Q_DECLARE_PUBLIC(StatusNotifierHost)
@@ -75,7 +75,7 @@ namespace xdg {
     };
 };
 
-using namespace xdg;
+using namespace KaZoe;
 
 StatusNotifierHost::StatusNotifierHost(QObject *parent)
     : QAbstractListModel{parent}

@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QVariantMap>
 
-namespace xdg {
+namespace KaZoe {
     class NotificationMessage : public QObject
     {
         Q_OBJECT

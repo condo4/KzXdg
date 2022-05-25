@@ -5,7 +5,7 @@
 #include <QFileSystemWatcher>
 #include <QMap>
 
-namespace xdg {
+namespace KaZoe {
     class Entry;
 
     class Entries : public QObject
@@ -13,7 +13,7 @@ namespace xdg {
         Q_OBJECT
         QString m_type;
         QFileSystemWatcher m_watcher;
-        QMap<QString, xdg::Entry*> m_entries;
+        QMap<QString, KaZoe::Entry*> m_entries;
 
     private slots:
         void _directoryChanged(const QString &path);
@@ -26,7 +26,7 @@ namespace xdg {
         int addDirectory(const QString &path, bool replace = false);
         qsizetype count() const;
         const Entry *getEntry(int i) const;
-        QList<xdg::Entry *> getEntries();
+        QList<KaZoe::Entry *> getEntries();
 
     signals:
         void entryDataChanged(const QString appid, const QString key, const QString value);

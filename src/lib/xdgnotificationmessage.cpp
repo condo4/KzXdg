@@ -2,48 +2,48 @@
 #include <QTimer>
 
 
-QString xdg::NotificationMessage::appName() const
+QString KaZoe::NotificationMessage::appName() const
 {
     return m_appName;
 }
 
-QString xdg::NotificationMessage::appIcon() const
+QString KaZoe::NotificationMessage::appIcon() const
 {
     return m_appIcon;
 }
 
-QString xdg::NotificationMessage::summary() const
+QString KaZoe::NotificationMessage::summary() const
 {
     return m_summary;
 }
 
-QString xdg::NotificationMessage::body() const
+QString KaZoe::NotificationMessage::body() const
 {
     return m_body;
 }
 
-QStringList xdg::NotificationMessage::actions() const
+QStringList KaZoe::NotificationMessage::actions() const
 {
     return m_actions;
 }
 
-QVariantMap xdg::NotificationMessage::hints() const
+QVariantMap KaZoe::NotificationMessage::hints() const
 {
     return m_hints;
 }
 
-uint xdg::NotificationMessage::id() const
+uint KaZoe::NotificationMessage::id() const
 {
     return m_id;
 }
 
-void xdg::NotificationMessage::_expired()
+void KaZoe::NotificationMessage::_expired()
 {
     emit expired(this);
 }
 
 
-xdg::NotificationMessage::NotificationMessage(
+KaZoe::NotificationMessage::NotificationMessage(
         const QString &app_name,
         const QString &app_icon,
         const QString &summary,
@@ -62,10 +62,10 @@ xdg::NotificationMessage::NotificationMessage(
     , m_timeout(timeout)
 {
     if(m_timeout > 0)
-        QTimer::singleShot(m_timeout, this, &xdg::NotificationMessage::_expired);
+        QTimer::singleShot(m_timeout, this, &KaZoe::NotificationMessage::_expired);
 }
 
-void xdg::NotificationMessage::update(const QString &app_name, const QString &app_icon, const QString &summary, const QString &body, const QStringList &actions, const QVariantMap &hints, int timeout)
+void KaZoe::NotificationMessage::update(const QString &app_name, const QString &app_icon, const QString &summary, const QString &body, const QStringList &actions, const QVariantMap &hints, int timeout)
 {
     if(m_appName != app_name)
     {
@@ -109,11 +109,11 @@ void xdg::NotificationMessage::update(const QString &app_name, const QString &ap
         emit timeoutChanged(m_timeout);
     }
     if(m_timeout > 0)
-        QTimer::singleShot(m_timeout, this, &xdg::NotificationMessage::_expired);
+        QTimer::singleShot(m_timeout, this, &KaZoe::NotificationMessage::_expired);
 
 }
 
-void xdg::NotificationMessage::setId(uint id) 
+void KaZoe::NotificationMessage::setId(uint id) 
 {
     m_id = id;
 }

@@ -6,17 +6,17 @@
 #include <set>
 #include <algorithm>
 
-xdg::Entries::Entries(QObject *parent)
+KaZoe::Entries::Entries(QObject *parent)
     : QObject(parent)
 {
     QObject::connect(&m_watcher, &QFileSystemWatcher::directoryChanged, this, &Entries::_directoryChanged, Qt::QueuedConnection);
 }
 
-void xdg::Entries::_directoryChanged(const QString &path)
+void KaZoe::Entries::_directoryChanged(const QString &path)
 {
     QDir directory(path);
     QStringList old, now, removed, added;
-    for(xdg::Entry *entry: m_entries)
+    for(KaZoe::Entry *entry: m_entries)
     {
         if(entry->path().startsWith(directory.absolutePath()))
         {
@@ -43,25 +43,25 @@ void xdg::Entries::_directoryChanged(const QString &path)
     }
 }
 
-void xdg::Entries::_entryDataChanged(const QString key, const QString value)
+void KaZoe::Entries::_entryDataChanged(const QString key, const QString value)
 {
-    xdg::Entry* ent = qobject_cast<xdg::Entry*>(QObject::sender());
+    KaZoe::Entry* ent = qobject_cast<KaZoe::Entry*>(QObject::sender());
     emit entryDataChanged(ent->appId(), key, value);
 }
 
-void xdg::Entries::unregister(const QString &path)
+void KaZoe::Entries::unregister(const QString &path)
 {
     QFileInfo info(path);
     QString id = info.completeBaseName();
     int oldid = m_entries.keys().indexOf(id);
     emit startRemoveEntry(oldid);
-    xdg::Entry* old = m_entries[id];
+    KaZoe::Entry* old = m_entries[id];
     m_watcher.removePath(old->path());
     m_entries.remove(id);
     emit endRemoveEntry(oldid);
 }
 
-int xdg::Entries::add(const QString &path, bool replace)
+int KaZoe::Entries::add(const QString &path, bool replace)
 {
     QFileInfo info(path);
     QString id = info.completeBaseName();
@@ -83,9 +83,9 @@ int xdg::Entries::add(const QString &path, bool replace)
         }
     }
 
-    xdg::Entry* entry = new xdg::Entry(path);
-    QObject::connect(entry, &xdg::Entry::dataChanged, this, &Entries::_entryDataChanged);
-    QObject::connect(entry, &xdg::Entry::raiseProcess, this, &Entries::raiseProcess);
+    KaZoe::Entry* entry = new KaZoe::Entry(path);
+    QObject::connect(entry, &KaZoe::Entry::dataChanged, this, &Entries::_entryDataChanged);
+    QObject::connect(entry, &KaZoe::Entry::raiseProcess, this, &Entries::raiseProcess);
 
     m_entries[id] = entry;
     emit startCreateEntry(m_entries.keys().indexOf(id));
@@ -93,7 +93,7 @@ int xdg::Entries::add(const QString &path, bool replace)
     return 0;
 }
 
-int xdg::Entries::addDirectory(const QString &path, bool replace)
+int KaZoe::Entries::addDirectory(const QString &path, bool replace)
 {
     QFileInfo info(path.trimmed());
     if(!info.isDir())
@@ -112,17 +112,17 @@ int xdg::Entries::addDirectory(const QString &path, bool replace)
     return 0;
 }
 
-qsizetype xdg::Entries::count() const
+qsizetype KaZoe::Entries::count() const
 {
     return m_entries.count();
 }
 
-const xdg::Entry *xdg::Entries::getEntry(int i) const
+const KaZoe::Entry *KaZoe::Entries::getEntry(int i) const
 {
     return m_entries[m_entries.keys()[i]];
 }
 
-QList<xdg::Entry *> xdg::Entries::getEntries()
+QList<KaZoe::Entry *> KaZoe::Entries::getEntries()
 {
     return m_entries.values();
 }

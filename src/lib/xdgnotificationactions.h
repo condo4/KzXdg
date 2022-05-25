@@ -3,7 +3,7 @@
 
 #include <QAbstractListModel>
 
-namespace xdg {
+namespace KaZoe {
 
     class NotificationActions: public QAbstractListModel
     {

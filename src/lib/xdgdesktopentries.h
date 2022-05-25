@@ -5,12 +5,12 @@
 #include <QObject>
 #include "xdgentries.h"
 
-namespace xdg {
+namespace KaZoe {
     class DesktopEntries : public QAbstractListModel
     {
         Q_OBJECT
         Q_PROPERTY(QStringList categories READ categories NOTIFY categoriesChanged)
-        xdg::Entries m_entries;
+        KaZoe::Entries m_entries;
 
     private slots:
         bool _contains(QString path);

@@ -5,7 +5,7 @@
 #include <QObject>
 #include "xdgdesktopentries.h"
 
-namespace xdg {
+namespace KaZoe {
     class DesktopEntries;
 
     class DesktopFilter : public QSortFilterProxyModel
@@ -16,7 +16,7 @@ namespace xdg {
         Q_PROPERTY(QString section READ section WRITE setSection NOTIFY sectionChanged)
         Q_PROPERTY(bool showAll READ showAll WRITE setShowAll NOTIFY showAllChanged)
 
-        xdg::DesktopEntries *m_model;
+        KaZoe::DesktopEntries *m_model;
         QString m_category;
         QString m_section;
         bool m_showAll {false};

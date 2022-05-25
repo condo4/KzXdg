@@ -12,7 +12,7 @@
 #define XDG_STATUS_ACTIVE "Active"
 #define XDG_STATUS_NEEDSATTENTION "NeedsAttention"
 
-namespace xdg {
+namespace KaZoe {
 
     class StatusNotifierItem : public QObject
     {

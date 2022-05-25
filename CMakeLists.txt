@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(KzXdgUtils VERSION 1.0.0 LANGUAGES CXX)
+project(KzXdg VERSION 1.0.0 LANGUAGES CXX)
 
 include(GNUInstallDirs)
 
@@ -9,7 +9,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 
 if(NOT DEFINED QML_MODULE_INSTALL_PATH)
     if(DEFINED OE_QMAKE_PATH_QML)
@@ -22,7 +21,7 @@ endif()
 find_package(Qt6 COMPONENTS Core Quick Qml DBus REQUIRED)
 
 set(PLUGIN_SOURCES
-    src/kzxdgutils_plugin.h src/kzxdgutils_plugin.cpp
+    src/kzxdg_plugin.h src/kzxdg_plugin.cpp
     qml/qmldir
 )
 
@@ -43,6 +42,7 @@ set(LIBRARY_SOURCES
     src/lib/xdgstatusnotifieritem.cpp
     src/lib/xdgstatusnotifierhost.cpp
     src/lib/xdgstatusnotifierwatcher.cpp
+    cmake/CPack.cmake
 )
 
 set(LIBRARY_HEADERS_PRIVATE
@@ -72,29 +72,29 @@ qt_add_dbus_adaptor(    DBUS_IFACE_SRCS api/org.freedesktop.Notifications.xml xd
 qt_add_dbus_interface(  DBUS_IFACE_SRCS api/org.freedesktop.Notifications.xml NotificationsIface)
 
 list(APPEND             DBUS_IFACE_SRCS api/org.freedesktop.StatusNotifierItem.xml)
-qt_add_dbus_adaptor(    DBUS_IFACE_SRCS api/org.freedesktop.StatusNotifierItem.xml xdgstatusnotifieritem.h xdg::StatusNotifierItem)
+qt_add_dbus_adaptor(    DBUS_IFACE_SRCS api/org.freedesktop.StatusNotifierItem.xml xdgstatusnotifieritem.h KaZoe::StatusNotifierItem)
 qt_add_dbus_interface(  DBUS_IFACE_SRCS api/org.freedesktop.StatusNotifierItem.xml XdgStatusNotifierItemIface)
 
 list(APPEND             DBUS_IFACE_SRCS api/org.freedesktop.StatusNotifierWatcher.xml)
-qt_add_dbus_adaptor(    DBUS_IFACE_SRCS api/org.freedesktop.StatusNotifierWatcher.xml xdgstatusnotifierwatcher.h xdg::StatusNotifierWatcher)
+qt_add_dbus_adaptor(    DBUS_IFACE_SRCS api/org.freedesktop.StatusNotifierWatcher.xml xdgstatusnotifierwatcher.h KaZoe::StatusNotifierWatcher)
 qt_add_dbus_interface(  DBUS_IFACE_SRCS api/org.freedesktop.StatusNotifierWatcher.xml XdgStatusNotifierWatcherIface)
 
-add_library(KzXdgUtilsPlugin  SHARED ${PLUGIN_SOURCES})
-add_library(kzxdgutils        SHARED ${LIBRARY_SOURCES} ${LIBRARY_HEADERS} ${LIBRARY_HEADERS_PRIVATE} ${DBUS_IFACE_SRCS} cmake/Config.cmake.in)
-set_target_properties(kzxdgutils PROPERTIES PUBLIC_HEADER "${LIBRARY_HEADERS}")
-set_target_properties(kzxdgutils PROPERTIES VERSION ${CMAKE_PROJECT_VERSION} SOVERSION 1)
+add_library(KzXdgPlugin  SHARED ${PLUGIN_SOURCES})
+add_library(KzXdg        SHARED ${LIBRARY_SOURCES} ${LIBRARY_HEADERS} ${LIBRARY_HEADERS_PRIVATE} ${DBUS_IFACE_SRCS} cmake/Config.cmake.in)
+set_target_properties(KzXdg PROPERTIES PUBLIC_HEADER "${LIBRARY_HEADERS}")
+set_target_properties(KzXdg PROPERTIES VERSION ${CMAKE_PROJECT_VERSION} SOVERSION 1)
 
-target_compile_definitions(KzXdgUtilsPlugin
+target_compile_definitions(KzXdgPlugin
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>
 )
 
-target_link_libraries(KzXdgUtilsPlugin
+target_link_libraries(KzXdgPlugin
     PRIVATE
         Qt6::Qml
-        kzxdgutils
+        KzXdg
 )
 
-target_link_libraries(kzxdgutils
+target_link_libraries(KzXdg
     PRIVATE
         Qt6::Core
         Qt6::Quick
@@ -102,16 +102,16 @@ target_link_libraries(kzxdgutils
 )
 
 add_executable(test_xdg src/test/test_xdg.cpp)
-target_link_libraries(test_xdg PRIVATE kzxdgutils Qt6::Core)
+target_link_libraries(test_xdg PRIVATE KzXdg Qt6::Core)
 
-install(TARGETS KzXdgUtilsPlugin DESTINATION ${QML_MODULE_INSTALL_PATH}/KaZoe/XdgUtils)
-install(FILES qml/qmldir DESTINATION ${QML_MODULE_INSTALL_PATH}/KaZoe/XdgUtils)
-install(TARGETS kzxdgutils PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/kzxdgutils")
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/notificationsadaptor.h DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/kzxdgutils" RENAME xdgnotificationsadaptor.h)
+install(TARGETS KzXdgPlugin DESTINATION ${QML_MODULE_INSTALL_PATH}/org/kazoe/xdg)
+install(FILES qml/qmldir DESTINATION ${QML_MODULE_INSTALL_PATH}/org/kazoe/xdg)
+install(TARGETS KzXdg PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/KaZoe/Xdg/")
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/notificationsadaptor.h DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/KaZoe/Xdg" RENAME xdgnotificationsadaptor.h)
 
 # CMake Module
 include(CMakePackageConfigHelpers)
-set(CMakeModuleName "KzXdgUtils")
+set(CMakeModuleName "KzXdg")
 configure_package_config_file(
     cmake/Config.cmake.in
     ${CMAKE_CURRENT_BINARY_DIR}/${CMakeModuleName}Config.cmake
@@ -125,3 +125,5 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMakeModuleName}Config.cmake
               ${CMAKE_CURRENT_BINARY_DIR}/${CMakeModuleName}ConfigVersion.cmake
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${CMakeModuleName}
 )
+
+include(cmake/CPack.cmake)

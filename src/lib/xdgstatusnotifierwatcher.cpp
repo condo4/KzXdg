@@ -4,7 +4,7 @@
 #include <QDBusConnection>
 #include <debug.h>
 
-using namespace xdg;
+using namespace KaZoe;
 
 StatusNotifierWatcher::StatusNotifierWatcher(QObject *parent)
     : QObject{parent}

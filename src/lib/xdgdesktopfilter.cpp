@@ -3,40 +3,40 @@
 #include "xdgentry.h"
 #include <qdebug.h>
 
-xdg::DesktopFilter::DesktopFilter(QObject *parent)
+KaZoe::DesktopFilter::DesktopFilter(QObject *parent)
     : QSortFilterProxyModel(parent)
 {
 }
 
-QObject *xdg::DesktopFilter::model() const
+QObject *KaZoe::DesktopFilter::model() const
 {
     return static_cast<QObject*>(m_model);
 }
 
-QString xdg::DesktopFilter::category() const
+QString KaZoe::DesktopFilter::category() const
 {
     return m_category;
 }
 
-QString xdg::DesktopFilter::section() const
+QString KaZoe::DesktopFilter::section() const
 {
     return m_section;
 }
 
 
-bool xdg::DesktopFilter::showAll() const
+bool KaZoe::DesktopFilter::showAll() const
 {
     return m_showAll;
 }
 
-bool xdg::DesktopFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+bool KaZoe::DesktopFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
     QModelIndex index = sourceModel()->index(sourceRow, 0, sourceParent);
-    QVariant ventry = sourceModel()->data(index, xdg::DesktopEntries::EntryRole);
-    const xdg::Entry *entry = qvariant_cast<const xdg::Entry *>(ventry);
+    QVariant ventry = sourceModel()->data(index, KaZoe::DesktopEntries::EntryRole);
+    const KaZoe::Entry *entry = qvariant_cast<const KaZoe::Entry *>(ventry);
     if(!entry)
     {
-        qWarning() << "Can't retrive entry for " << sourceModel()->data(index, xdg::DesktopEntries::NameRole).toString();
+        qWarning() << "Can't retrive entry for " << sourceModel()->data(index, KaZoe::DesktopEntries::NameRole).toString();
         return false;
     }
 
@@ -55,29 +55,29 @@ bool xdg::DesktopFilter::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 }
 
 
-QVariant xdg::DesktopFilter::data(const QModelIndex &index, int role) const
+QVariant KaZoe::DesktopFilter::data(const QModelIndex &index, int role) const
 {
     if(!m_section.isEmpty())
     {
-        const xdg::Entry *entry = QSortFilterProxyModel::data(index, xdg::DesktopEntries::EntryRole).value<const xdg::Entry *>();
+        const KaZoe::Entry *entry = QSortFilterProxyModel::data(index, KaZoe::DesktopEntries::EntryRole).value<const KaZoe::Entry *>();
         if(entry)
         {
             QString res;
             switch(role) {
                 case Qt::DisplayRole:
-                case xdg::DesktopEntries::NameRole:
+                case KaZoe::DesktopEntries::NameRole:
                     res = entry->data(m_section + "/Name");
                     return (res.isEmpty())?(res):(entry->data(XDG_NAME));
-                case xdg::DesktopEntries::ExecRole:
+                case KaZoe::DesktopEntries::ExecRole:
                     res = entry->data(m_section + "/Exec");
                     return (!res.isEmpty())?(res):(entry->data(XDG_EXEC));
-                case xdg::DesktopEntries::IconRole:
+                case KaZoe::DesktopEntries::IconRole:
                     res = entry->data(m_section + "/Icon");
                     return (!res.isEmpty())?(res):(entry->data(XDG_ICON));
-                case xdg::DesktopEntries::CategoryRole:
+                case KaZoe::DesktopEntries::CategoryRole:
                     res = entry->data(m_section + "/Categories");
                     return (!res.isEmpty())?(res):(entry->data(XDG_CATEGORIES));
-                case xdg::DesktopEntries::KeywordsRole:
+                case KaZoe::DesktopEntries::KeywordsRole:
                     res = entry->data(m_section + "/Keywords");
                     return (!res.isEmpty())?(res):(entry->data(XDG_KEYWORDS));
             }
@@ -86,12 +86,12 @@ QVariant xdg::DesktopFilter::data(const QModelIndex &index, int role) const
     return QSortFilterProxyModel::data(index, role);
 }
 
-void xdg::DesktopFilter::setModel(QObject *model)
+void KaZoe::DesktopFilter::setModel(QObject *model)
 {
     if (m_model == model)
         return;
 
-    xdg::DesktopEntries *entries = qobject_cast<xdg::DesktopEntries*>(model);
+    KaZoe::DesktopEntries *entries = qobject_cast<KaZoe::DesktopEntries*>(model);
     if(entries)
     {
         m_model = entries;
@@ -100,7 +100,7 @@ void xdg::DesktopFilter::setModel(QObject *model)
     }
 }
 
-void xdg::DesktopFilter::setCategory(QString category)
+void KaZoe::DesktopFilter::setCategory(QString category)
 {
     if (m_category == category)
         return;
@@ -110,7 +110,7 @@ void xdg::DesktopFilter::setCategory(QString category)
     emit categoryChanged(m_category);
 }
 
-void xdg::DesktopFilter::setSection(QString section)
+void KaZoe::DesktopFilter::setSection(QString section)
 {
     if (m_section == section)
         return;
@@ -120,7 +120,7 @@ void xdg::DesktopFilter::setSection(QString section)
     emit sectionChanged(m_section);
 }
 
-void xdg::DesktopFilter::setShowAll(bool showall)
+void KaZoe::DesktopFilter::setShowAll(bool showall)
 {
     if (m_showAll == showall)
         return;

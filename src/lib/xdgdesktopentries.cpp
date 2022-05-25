@@ -8,46 +8,46 @@
 
 
 
-xdg::DesktopEntries::DesktopEntries(QObject *parent)
+KaZoe::DesktopEntries::DesktopEntries(QObject *parent)
     : QAbstractListModel(parent)
 {
-    QStringList datadirs = xdg::dataDirs();
+    QStringList datadirs = KaZoe::dataDirs();
     for (auto dir = datadirs.rbegin(); dir != datadirs.rend(); ++dir)
     {
         m_entries.addDirectory(*dir + "/applications");
     }
-    m_entries.addDirectory(xdg::dataHome() + "/applications");
-    QObject::connect(&m_entries, &xdg::Entries::entryDataChanged, this, &xdg::DesktopEntries::_dataChanged);
-    QObject::connect(&m_entries, &xdg::Entries::raiseProcess, this, &xdg::DesktopEntries::raiseProcess);
-    QObject::connect(&m_entries, &xdg::Entries::startCreateEntry, [this](int i){
+    m_entries.addDirectory(KaZoe::dataHome() + "/applications");
+    QObject::connect(&m_entries, &KaZoe::Entries::entryDataChanged, this, &KaZoe::DesktopEntries::_dataChanged);
+    QObject::connect(&m_entries, &KaZoe::Entries::raiseProcess, this, &KaZoe::DesktopEntries::raiseProcess);
+    QObject::connect(&m_entries, &KaZoe::Entries::startCreateEntry, [this](int i){
         beginInsertRows(QModelIndex(), i, i);
     });
-    QObject::connect(&m_entries, &xdg::Entries::startCreateEntry, [this](int i){
+    QObject::connect(&m_entries, &KaZoe::Entries::startCreateEntry, [this](int i){
         endInsertRows();
         emit categoriesChanged(categories());
     });
 
-    QObject::connect(&m_entries, &xdg::Entries::startRemoveEntry, [this](int i){
+    QObject::connect(&m_entries, &KaZoe::Entries::startRemoveEntry, [this](int i){
         beginRemoveRows(QModelIndex(), i, i);
     });
-    QObject::connect(&m_entries, &xdg::Entries::startRemoveEntry, [this](int i){
+    QObject::connect(&m_entries, &KaZoe::Entries::startRemoveEntry, [this](int i){
         endRemoveRows();
         emit categoriesChanged(categories());
     });
 }
 
-int xdg::DesktopEntries::rowCount(const QModelIndex &parent) const
+int KaZoe::DesktopEntries::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return m_entries.count();
 }
 
-QVariant xdg::DesktopEntries::data(const QModelIndex &index, int role) const
+QVariant KaZoe::DesktopEntries::data(const QModelIndex &index, int role) const
 {
     if(index.row() > m_entries.count())
         return QVariant();
 
-    const xdg::Entry *entry = m_entries.getEntry(index.row());
+    const KaZoe::Entry *entry = m_entries.getEntry(index.row());
 
     switch(role) {
         case Qt::DisplayRole:
@@ -80,7 +80,7 @@ QVariant xdg::DesktopEntries::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-QHash<int, QByteArray> xdg::DesktopEntries::roleNames() const
+QHash<int, QByteArray> KaZoe::DesktopEntries::roleNames() const
 {
     QHash<int, QByteArray> roles = QAbstractItemModel::roleNames();
     roles[IconRole] = "appIcon";
@@ -97,10 +97,10 @@ QHash<int, QByteArray> xdg::DesktopEntries::roleNames() const
     return roles;
 }
 
-QStringList xdg::DesktopEntries::categories()
+QStringList KaZoe::DesktopEntries::categories()
 {
     QStringList ret;
-    for(xdg::Entry *entry: m_entries.getEntries())
+    for(KaZoe::Entry *entry: m_entries.getEntries())
     {
         QString c = entry->data(XDG_CATEGORIES);
         if(!ret.contains(c))
@@ -109,20 +109,20 @@ QStringList xdg::DesktopEntries::categories()
     return ret;
 }
 
-void xdg::DesktopEntries::start(QString path, const QStringList& args)
+void KaZoe::DesktopEntries::start(QString path, const QStringList& args)
 {
-    for(xdg::Entry *entry: m_entries.getEntries())
+    for(KaZoe::Entry *entry: m_entries.getEntries())
     {
         if(entry->path() == path)
             entry->start(args);
     }
 }
 
-void xdg::DesktopEntries::stop(QString path, const QStringList& args)
+void KaZoe::DesktopEntries::stop(QString path, const QStringList& args)
 {
     bool isPid;
     int pid = path.toInt(&isPid, 10);
-    for(xdg::Entry *entry: m_entries.getEntries())
+    for(KaZoe::Entry *entry: m_entries.getEntries())
     {
         if((isPid && entry->pid() == pid) || (entry->path() == path))
         {
@@ -133,9 +133,9 @@ void xdg::DesktopEntries::stop(QString path, const QStringList& args)
     if(isPid) kill(pid, SIGTERM);
 }
 
-QString xdg::DesktopEntries::appIdData(QString appid, QString key)
+QString KaZoe::DesktopEntries::appIdData(QString appid, QString key)
 {
-    for(xdg::Entry *entry: m_entries.getEntries())
+    for(KaZoe::Entry *entry: m_entries.getEntries())
     {
         if(entry->appId() == appid)
             return entry->data(key);
@@ -143,9 +143,9 @@ QString xdg::DesktopEntries::appIdData(QString appid, QString key)
     return QString();
 }
 
-bool xdg::DesktopEntries::_contains(QString path)
+bool KaZoe::DesktopEntries::_contains(QString path)
 {
-    for(const xdg::Entry *entry: m_entries.getEntries())
+    for(const KaZoe::Entry *entry: m_entries.getEntries())
     {
         if(entry->path() == path)
             return true;
@@ -153,10 +153,10 @@ bool xdg::DesktopEntries::_contains(QString path)
     return false;
 }
 
-QStringList xdg::DesktopEntries::_getEntriesFrom(QString path)
+QStringList KaZoe::DesktopEntries::_getEntriesFrom(QString path)
 {
     QStringList entries;
-    for(xdg::Entry *entry: m_entries.getEntries())
+    for(KaZoe::Entry *entry: m_entries.getEntries())
     {
         if(path == "" || entry->path().startsWith(path))
             entries.append(entry->path());
@@ -164,7 +164,7 @@ QStringList xdg::DesktopEntries::_getEntriesFrom(QString path)
     return entries;
 }
 
-void xdg::DesktopEntries::_dataChanged(const QString appid, const QString item, const QString value)
+void KaZoe::DesktopEntries::_dataChanged(const QString appid, const QString item, const QString value)
 {
     if(item == XDG_CATEGORIES)
     {
@@ -190,7 +190,7 @@ void xdg::DesktopEntries::_dataChanged(const QString appid, const QString item, 
     {
         for(int i = 0; i < m_entries.count(); i++)
         {
-            const xdg::Entry *entry = m_entries.getEntry(i);
+            const KaZoe::Entry *entry = m_entries.getEntry(i);
             if(entry->appId() == appid)
             {
                 QVector<int> r;

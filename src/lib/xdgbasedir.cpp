@@ -32,28 +32,28 @@ static inline QString envOrDefault(const char *name, const QString &def)
     return env;
 }
 
-QString xdg::dataHome()
+QString KaZoe::dataHome()
 {
     return envOrDefault("XDG_DATA_HOME", home() + "/.local/share");
 }
 
-QString xdg::configHome()
+QString KaZoe::configHome()
 {
     return envOrDefault("XDG_CONFIG_HOME", home() + "/.config");
 }
 
-QString xdg::cacheHome()
+QString KaZoe::cacheHome()
 {
     return envOrDefault("XDG_CACHE_HOME", home() + "/.cache");
 }
 
-QString xdg::stateHome()
+QString KaZoe::stateHome()
 {
     return envOrDefault("XDG_STATE_HOME", home() + "/.local/state");
 }
 
 
-QStringList xdg::dataDirs()
+QStringList KaZoe::dataDirs()
 {
     QString dataDirs = QString::fromUtf8(qgetenv("XDG_DATA_DIRS"));
     if(dataDirs.isEmpty())
@@ -63,7 +63,7 @@ QStringList xdg::dataDirs()
     return dataDirs.split(":");
 }
 
-QStringList xdg::configDirs()
+QStringList KaZoe::configDirs()
 {
     QString configDirs = QString::fromUtf8(qgetenv("XDG_CONFIG_DIRS"));
     if(configDirs.isEmpty())
@@ -73,7 +73,7 @@ QStringList xdg::configDirs()
     return configDirs.split(":");
 }
 
-QString xdg::runtimeDir()
+QString KaZoe::runtimeDir()
 {
     return envOrDefault("XDG_RUNTIME_DIR", QString("/run/user/%i").arg(user()));
 }

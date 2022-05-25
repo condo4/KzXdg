@@ -1,2 +1,2 @@
-module kzxdgutils
-plugin KzXdgUtilsPlugin
+module org.kazoe.xdg
+plugin KzXdgPlugin

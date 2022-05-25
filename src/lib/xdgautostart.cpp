@@ -3,22 +3,22 @@
 #include "xdgentry.h"
 #include "debug.h"
 
-xdg::AutoStart::AutoStart(QObject *parent)
+KaZoe::AutoStart::AutoStart(QObject *parent)
     : QObject{parent}
 {
     qCDebug(AUTO_START) << "Create Auto start";
-    QStringList configdirs = xdg::configDirs();
+    QStringList configdirs = KaZoe::configDirs();
     for (auto dir = configdirs.rbegin(); dir != configdirs.rend(); ++dir)
     {
         m_entries.addDirectory(*dir + "/autostart");
     }
-    m_entries.addDirectory(xdg::configHome() + "/autostart");
+    m_entries.addDirectory(KaZoe::configHome() + "/autostart");
 }
 
-void xdg::AutoStart::start(QString key, QString value)
+void KaZoe::AutoStart::start(QString key, QString value)
 {
     qCDebug(AUTO_START) << "Start " << key << value;
-    for(xdg::Entry *entry: m_entries.getEntries())
+    for(KaZoe::Entry *entry: m_entries.getEntries())
     {
         if((!value.isNull()) && (!key.isNull()))
         {

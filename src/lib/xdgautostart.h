@@ -5,13 +5,13 @@
 #include "xdgentries.h"
 
 
-namespace xdg {
+namespace KaZoe {
     class AutoStart : public QObject
     {
         Q_OBJECT
     public:
         explicit AutoStart(QObject *parent = nullptr);
-        xdg::Entries m_entries;
+        KaZoe::Entries m_entries;
 
     public slots:
         void start(QString key = QString(), QString value = QString());

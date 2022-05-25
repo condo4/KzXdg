@@ -6,7 +6,7 @@
 class QDBusServiceWatcher;
 #define XDG_STATUS_NOTIFIER_WATCHER_PROTOCOL_VERSION 1
 
-namespace xdg {
+namespace KaZoe {
 
     class StatusNotifierWatcher: public QObject
     {

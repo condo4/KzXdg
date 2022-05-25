@@ -11,7 +11,7 @@
 #include <QString>
 
 //! XDG basedir implementation
-namespace xdg {
+namespace KaZoe {
 /*!
  *  \addtogroup XDG
  *  @{

@@ -16,7 +16,7 @@
 #define XDG_ACTION_START    "Desktop Action Start/Exec"
 #define XDG_ACTION_STOP     "Desktop Action Stop/Exec"
 
-namespace xdg {
+namespace KaZoe {
     class Entry: public QObject
     {
         Q_OBJECT
@@ -38,7 +38,7 @@ namespace xdg {
     public:
         explicit Entry(QString desktopfile, QObject *parent = nullptr);
         explicit Entry(QObject *parent = nullptr);
-        explicit Entry(const xdg::Entry& origin);
+        explicit Entry(const KaZoe::Entry& origin);
 
         QString path() const;
         QString appId() const;
@@ -62,6 +62,6 @@ namespace xdg {
     };
 }
 
-Q_DECLARE_METATYPE(const xdg::Entry*)
+Q_DECLARE_METATYPE(const KaZoe::Entry*)
 
 #endif // XDGENTRY_H
