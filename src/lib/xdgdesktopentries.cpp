@@ -103,7 +103,7 @@ QStringList KaZoe::DesktopEntries::categories()
     for(KaZoe::Entry *entry: m_entries.getEntries())
     {
         QString c = entry->data(XDG_CATEGORIES);
-        if(!ret.contains(c))
+        if(!ret.contains(c) && c.length())
             ret.append(c);
     }
     return ret;
